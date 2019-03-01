@@ -32,4 +32,11 @@ public class MessageController {
 
         return "Messages sent!";
     }
+
+    @GetMapping("/topic/{message}")
+    public String sendToTopic(@PathVariable String message){
+
+        provider.sendToTopic(message);
+        return "Message sent to topic!";
+    }
 }

@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 public class RabbitmqConsumerApplication {
     public static final String QUEUE_NAME = "paazl-queue";
     public static final String TEST_QUEUE_NAME = "test-paazl-queue";
-    public static final String TEST_MESSAGE_KEY = "paazl.binding.message";
 
     @Bean
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {

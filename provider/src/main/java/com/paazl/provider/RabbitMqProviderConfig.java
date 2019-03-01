@@ -10,38 +10,58 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.paazl.provider.RabbitmqProviderApplication.ROUTING_KEY;
-import static com.paazl.provider.RabbitmqProviderApplication.QUEUE_NAME;
-import static com.paazl.provider.RabbitmqProviderApplication.ROUTING_KEY_MESSAGE;
-import static com.paazl.provider.RabbitmqProviderApplication.TEST_QUEUE_NAME;
-import static com.paazl.provider.RabbitmqProviderApplication.TOPIC_EXCHANGE_NAME;
-
 @Configuration
 public class RabbitMqProviderConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue(QUEUE_NAME, false);
+        return new Queue("paazl-queue", false);
     }
 
     @Bean
     public Queue queueTestMessage() {
-        return new Queue(TEST_QUEUE_NAME, false);
+        return new Queue("test-paazl-queue", false);
+    }
+
+
+    @Bean
+    public Queue topicQueue_1() {
+        return new Queue("paazl-topic-queue_1", false);
+    }
+
+    @Bean
+    public Queue topicQueue_2() {
+        return new Queue("paazl-topic-queue_2", false);
     }
 
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(TOPIC_EXCHANGE_NAME);
+        return new TopicExchange("paazl-exchange");
+    }
+
+    @Bean
+    public TopicExchange topic() {
+        return new TopicExchange("paazl-topic");
     }
 
     @Bean
     public Binding binding() {
-        return BindingBuilder.bind(queue()).to(exchange()).with(ROUTING_KEY);
+        return BindingBuilder.bind(queue()).to(exchange()).with("paazl.binding.test");
     }
 
     @Bean
     public Binding bindingTestMessage() {
-        return BindingBuilder.bind(queueTestMessage()).to(exchange()).with(ROUTING_KEY_MESSAGE);
+        return BindingBuilder.bind(queueTestMessage()).to(exchange()).with("paazl.binding.message");
+    }
+
+    @Bean
+    public Binding topicQueueBinding_1() {
+        return BindingBuilder.bind(topicQueue_1()).to(topic()).with("*.log.*");
+    }
+
+    @Bean
+    public Binding topicQueueBinding_2() {
+        return BindingBuilder.bind(topicQueue_2()).to(topic()).with("*.*.notification");
     }
 
     @Bean
